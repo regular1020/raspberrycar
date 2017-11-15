@@ -210,15 +210,15 @@ def linetrace(direction, track, speed):
     elif track == 1:
         go_any(direction, speed, speed)
     elif track == 2:
-        go_any(direction, speed, speed*0.5)
+        go_any(direction, speed, speed*0.7)
     elif track == 3:
-        go_any(direction, speed*0.5, speed)
+        go_any(direction, speed*0.7, speed)
     elif track == 4:
         go_any(direction, speed, speed*0.1)
     elif track == 5:
         go_any(direction, speed*0.1, speed)
     elif track == 6:
-        stop()
+        go_any(direction, speed, speed*0.1)
 # ========================================================================
 # =======================================================================
 def stop():

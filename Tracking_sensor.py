@@ -102,14 +102,15 @@ GPIO.setup(R2, GPIO.IN)
 #
 # =======================================================================
 
-L2s = GPIO.input(L2)
-L1s = GPIO.input(L1)
-Cs = GPIO.input(C)
-R1s = GPIO.input(R1)
-R2s = GPIO.input(R2)
-
 # =======================================================================
 def getTrack():
+    
+    L2s = GPIO.input(L2)
+    L1s = GPIO.input(L1)
+    Cs = GPIO.input(C)
+    R1s = GPIO.input(R1)
+    R2s = GPIO.input(R2)
+
     ### getTrack sensor the track and return each number to the circumstance
     ### return 0 : C off L2,L1,R1,R2 on
     ### return 1 : C,R1,L1 off L2,R2 on
@@ -124,22 +125,29 @@ def getTrack():
     ### 5 means the car is completely moved to right
     ### return 6 : all on
     ### 6 means the car is completely out of track
+    x = 0
     if Cs == 0:
         if L1s == 0:
             if R1s == 0:
-                return 1
+                x = 1
             elif R1s == 1:
-                return 2
+                x = 2
         elif L1s == 1:
             if R1s == 0:
-                return 3
-        else: return 0
+                x = 3
+        else:
+            x = 0
+    elif L1s == 0:
+        x = 2
+    elif R1s == 0:
+        x = 3
     elif L2s == 0:
-        return 4
+        x = 4
     elif R2s == 0:
-        return 5
+        x = 5
     else:
-        return 6
+        x = 6
+    return x
 # ==========================================================================
 if __name__ == "__main__":
     try:
