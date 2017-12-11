@@ -116,55 +116,33 @@ def PointTurn(direction, speed):
         # set the speed of the right motor to go backward
         setting.RightPwm.ChangeDutyCycle(speed)
 # =======================================================================
-
 # =======================================================================
-def finding(speed):
-    '''
-    finding 함수는 라인트레이싱 하는 중에 만나는 교차로를 찾고 판단한다.
-    :param track: getTrack을 통해 받은 값, Center, left, right, sleft, sright out이 있다.
-    :param speed: 구동체의 속도 0~100의 값.
-    '''
-    s = Tracking_sensor.getTrack()
-    if s == 'center':
-        print(s)
-        go_any(forward, speed, speed)
-    elif s == 'sright':
-        print(s)
-        go_any(forward, speed*1.5, speed*0.8)
-    elif s == 'sleft':
-        print(s)
-        go_any(forward, speed*0.8, speed*1.5)
-    elif s == 'right':
-        print(s)
-        go_any(forward, speed, speed)
-        time.sleep(0.3)
-        PointTurn('right', speed)
-        time.sleep(0.2)
-        l = Tracking_sensor.getTracklist()
-        while l[3] == 1:
-            l = Tracking_sensor.getTracklist()
-            PointTurn('right', speed*0.5)
+def lineTrace(speed):
+    t = Tracking_sensor.goingtrack()
+    print (t)
+    if not t[2] and not t[4]:
         stop()
-    elif s == 'left':
-        print(s)
-        go_any(forward, speed, speed)
-        s = Tracking_sensor.getTrack()
-        if s == 'out':
-            PointTurn('left', speed)
-            time.sleep(0.2)
-            l = Tracking_sensor.getTracklist()
-            while l[1] == 1:
-                PointTurn('left', speed*0.5)
-    elif s == 'out':
-        print(s)
-        l = Tracking_sensor.getTracklist()
-        while l[3] == 1:
-            l = Tracking_sensor.getTracklist()
-            PointTurn('right', speed*0.5)
-
-
-
-# =======================================================================
+        go_any(forward,speed,speed)
+        time.sleep(0.4)
+        PointTurn('right', speed)
+        time.sleep(0.5)
+        while Tracking_sensor.goingtrack()[3]:
+            continue
+        stop()
+    elif t[1] and not t[2] and t[3]:
+        go_any(forward,speed,speed)
+    elif not t[1]:
+        go_any(forward,speed,speed/3)
+    elif not t[3]:
+        go_any(forward,speed/3,speed)
+    elif t == [1,1,1,1,1]:
+        stop()
+        time.sleep(0.5)
+        PointTurn('left', speed)
+        while Tracking_sensor.goingtrack()[3]:
+            continue
+        stop()
+    time.sleep(0.1)
 
 # =======================================================================
 def stop():

@@ -1,15 +1,14 @@
 import RPi.GPIO as GPIO
 import going
 import setting
-import time
 
 try:
     # 초기 셋팅
     setting.LeftPwm.start(0)
     setting.RightPwm.start(0)
     while True:
-        going.finding(30)
-        time.sleep(0.1)
+        going.lineTrace(40)
+
 
 except KeyboardInterrupt:
     # the speed of left motor will be set as LOW
